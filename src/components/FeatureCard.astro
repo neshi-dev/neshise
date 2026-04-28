@@ -1,0 +1,19 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  description: string;
+}
+
+const { eyebrow, title, description } = Astro.props;
+---
+
+<article class="holo-border group rounded-[1.4rem] bg-white p-[1px] shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-holo">
+  <div class="h-full rounded-[1.35rem] border border-slate-100 bg-white/95 p-7">
+    <p class="mb-5 text-xs font-black uppercase tracking-[0.22em] text-gold">{eyebrow}</p>
+    <h3 class="mb-4 text-2xl font-black tracking-tight text-ink transition group-hover:bg-gradient-to-r group-hover:from-gold-deep group-hover:via-hologram-blue group-hover:to-hologram-violet group-hover:bg-clip-text group-hover:text-transparent">
+      {title}
+    </h3>
+    <p class="leading-7 text-slate-600">{description}</p>
+  </div>
+</article>

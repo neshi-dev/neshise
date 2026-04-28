@@ -1,0 +1,50 @@
+---
+/**
+ * Blog Section Component
+ * Accepts dynamic posts data as a prop rather than fetching it directly, 
+ * maintaining a clear separation of data retrieval and presentation logic.
+ */
+import BlogCard from '../BlogCard.astro';
+import type { WordPressDisplayPost } from '../../lib/wordpress';
+
+type ListingPost = WordPressDisplayPost & {
+  id?: string;
+};
+
+interface Props {
+  posts: ListingPost[];
+}
+
+const { posts } = Astro.props;
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const withBase = (path: string) => `${base}${path.replace(/^\/+/, '')}`;
+const postSlug = (id: string) => id.replace(/\.mdx?$/, '');
+const postHref = (post: (typeof posts)[number]) =>
+  post.href || (post.slug ? withBase(`blog/${post.slug}`) : post.id ? withBase(`blog/${postSlug(post.id)}`) : withBase('blog'));
+---
+
+<section class="bg-white py-24">
+  <div class="mx-auto max-w-7xl px-5 md:px-8">
+    <div class="mb-10 flex items-end justify-between gap-6">
+      <div>
+        <p class="mb-4 text-sm font-black uppercase tracking-[0.24em] text-gold">Blog</p>
+        <h2 class="text-4xl font-black tracking-tight md:text-5xl">Latest from the lab</h2>
+      </div>
+      <a href={withBase('blog')} class="hidden text-sm font-black uppercase tracking-[0.18em] text-gold-deep underline decoration-gold-light underline-offset-8 md:block">All posts</a>
+    </div>
+    <div class="grid gap-6 md:grid-cols-3">
+      {posts.map((post) => (
+        <BlogCard
+          href={postHref(post)}
+          title={post.title}
+          description={post.description}
+          category={post.category}
+          publishDate={post.publishDate}
+        />
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,53 @@
+---
+/**
+ * Header Component
+ * Encapsulates the top-level navigation markup and logic.
+ * Abstracts this away from the base layout to maintain clear separation of structural concerns.
+ */
+import { NAV_ITEMS } from '../lib/constants';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+const withBase = (path: string) => {
+  if (path.startsWith('#')) return `${base}${path}`;
+  return `${base}${path.replace(/^\/+/, '')}`;
+};
+---
+
+<header class="fixed left-0 right-0 top-5 z-50 flex justify-center px-5 pointer-events-none">
+  <nav 
+    class="pointer-events-auto flex w-full max-w-5xl items-center justify-between gap-6 rounded-[2rem] border border-gold-pale/60 bg-white/60 px-3 py-3 shadow-[0_16px_40px_rgba(17,18,22,0.04)] backdrop-blur-2xl transition-all duration-500 hover:bg-white/80 hover:shadow-[0_20px_50px_rgba(17,18,22,0.06)] md:px-5" 
+    aria-label="Main navigation"
+  >
+    <a href={base} class="group flex items-center gap-3 pl-2 transition-transform hover:scale-105" aria-label="NESHISE home">
+      <span class="grid size-9 place-items-center rounded-full border border-gold-light/50 bg-gradient-to-br from-white to-pearl text-sm font-black text-gold-deep shadow-sm">
+        N
+      </span>
+      <span class="text-lg font-black tracking-[0.2em] text-ink transition-colors group-hover:text-gold-deep">
+        NESHISE
+      </span>
+    </a>
+    
+    <div class="hidden items-center gap-8 md:flex">
+      {NAV_ITEMS.map((item) => (
+        <a
+          href={withBase(item.href)}
+          class="relative text-[13px] font-black uppercase tracking-[0.2em] text-slate-500 transition-colors hover:text-ink group"
+        >
+          {item.label}
+          <span class="absolute -bottom-1.5 left-0 h-[2px] w-0 bg-gold-light transition-all duration-300 group-hover:w-full"></span>
+        </a>
+      ))}
+    </div>
+    
+    <a
+      href={withBase('#contact')}
+      class="group relative overflow-hidden rounded-full border border-ink/10 bg-ink px-6 py-2.5 text-[13px] font-black uppercase tracking-[0.2em] text-white shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-holo hover:border-transparent"
+    >
+      <span class="relative z-10 transition-colors duration-300 group-hover:text-white">Contact</span>
+      <div class="absolute inset-0 z-0 bg-[linear-gradient(110deg,#111216,45%,#3a3c42,55%,#111216)] bg-[length:200%_100%] animate-shimmer opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+    </a>
+  </nav>
+</header>

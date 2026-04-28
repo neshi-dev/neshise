@@ -1,0 +1,27 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  category: string;
+  publishDate: Date;
+}
+
+const { href, title, description, category, publishDate } = Astro.props;
+const formattedDate = publishDate.toLocaleDateString('en', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric'
+});
+---
+
+<a href={href} class="holo-border group block rounded-[1.4rem] bg-white p-[1px] shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-holo">
+  <article class="h-full rounded-[1.35rem] border border-slate-100 bg-white/95 p-7">
+    <div class="mb-8 flex items-center justify-between gap-4 text-xs font-black uppercase tracking-[0.18em]">
+      <span class="text-gold">{category}</span>
+      <time class="text-slate-400" datetime={publishDate.toISOString()}>{formattedDate}</time>
+    </div>
+    <h2 class="mb-4 text-2xl font-black tracking-tight text-ink transition group-hover:text-gold-deep">{title}</h2>
+    <p class="leading-7 text-slate-600">{description}</p>
+  </article>
+</a>

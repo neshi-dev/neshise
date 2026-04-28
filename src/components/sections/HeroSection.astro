@@ -1,0 +1,58 @@
+---
+/**
+ * Hero Section Component
+ * Displays the main introduction, cover artwork, and primary call-to-action buttons.
+ */
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const withBase = (path: string) => `${base}${path.replace(/^\/+/, '')}`;
+---
+
+<section class="bg-white">
+  <div class="mx-auto max-w-7xl px-5 pb-16 pt-8 md:px-8 md:pb-20 md:pt-12">
+    <div class="overflow-hidden rounded-[1.75rem] border border-gold-pale bg-white shadow-soft">
+      <img
+        src={withBase('assets/neshise-cover-best.png')}
+        alt="NESHISE Accessible AI for All cover artwork"
+        class="block h-auto w-full"
+        width="1680"
+        height="945"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+
+    <div class="mx-auto max-w-5xl pt-10 text-center md:pt-14">
+      <p class="mb-5 text-sm font-black uppercase tracking-[0.28em] text-gold">AI growth studio and media lab</p>
+      <h1 class="text-4xl font-black leading-tight tracking-tight text-ink sm:text-5xl lg:text-7xl">
+        <span class="shiny-text">Accessible AI for creators, founders, and modern teams.</span>
+      </h1>
+      <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+        NESHISE blends AI education, search visibility, YouTube systems, and practical resources into one calm, useful platform for building online with intelligence.
+      </p>
+      <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href="#services" class="rounded-full bg-ink px-7 py-4 text-center text-sm font-black uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-gold-deep">
+          Explore Studio
+        </a>
+        <a href={withBase('resources')} class="rounded-full border border-gold-light bg-white px-7 py-4 text-center text-sm font-black uppercase tracking-[0.16em] text-gold-deep transition hover:-translate-y-0.5 hover:border-hologram-violet hover:shadow-holo">
+          Resource Hub
+        </a>
+      </div>
+      <div class="mt-12 grid gap-3 text-left sm:grid-cols-3">
+        <div class="rounded-2xl border border-slate-100 bg-pearl p-5">
+          <p class="text-3xl font-black text-ink">SEO</p>
+          <p class="mt-2 text-sm leading-6 text-slate-500">AI-ready content systems and organic discovery.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-100 bg-pearl p-5">
+          <p class="text-3xl font-black text-ink">YouTube</p>
+          <p class="mt-2 text-sm leading-6 text-slate-500">Tutorials, channel strategy, and video workflows.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-100 bg-pearl p-5">
+          <p class="text-3xl font-black text-ink">Hub</p>
+          <p class="mt-2 text-sm leading-6 text-slate-500">Guides, tools, prompts, and operator playbooks.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

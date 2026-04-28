@@ -1,0 +1,67 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getWordPressStaticPosts, type WordPressFullPost } from '../../lib/wordpress';
+
+type PageProps =
+  | { post: WordPressFullPost; source: 'wordpress' }
+  | { post: CollectionEntry<'blog'>; source: 'local' };
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const wordpressPosts = await getWordPressStaticPosts(50);
+  const wordpressPaths = wordpressPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post, source: 'wordpress' }
+  }));
+  const localPaths = posts.map((post) => ({
+    params: { slug: post.id.replace(/\.mdx?$/, '') },
+    props: { post, source: 'local' }
+  }));
+
+  return [...wordpressPaths, ...localPaths];
+}
+
+const { post, source } = Astro.props as PageProps;
+const isWordPress = source === 'wordpress';
+const localPost = isWordPress ? undefined : post;
+const wordpressPost = isWordPress ? post : undefined;
+const rendered = localPost ? await render(localPost) : undefined;
+const Content = rendered?.Content;
+const title = wordpressPost?.title ?? localPost?.data.title ?? 'NESHISE insight';
+const description = wordpressPost?.description ?? localPost?.data.description ?? '';
+const category = wordpressPost?.category ?? localPost?.data.category ?? 'Insight';
+const publishDate = wordpressPost?.publishDate ?? localPost?.data.publishDate ?? new Date();
+const author = wordpressPost ? 'NESHISE WordPress' : localPost?.data.author;
+const formattedDate = publishDate.toLocaleDateString('en', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric'
+});
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const withBase = (path: string) => `${base}${path.replace(/^\/+/, '')}`;
+---
+
+<BaseLayout title={`${title} | NESHISE Blog`} description={description}>
+  <main class="mx-auto max-w-3xl px-5 py-20 md:px-8">
+    <a href={withBase('blog')} class="text-sm font-black uppercase tracking-[0.18em] text-gold-deep underline decoration-gold-light underline-offset-8">
+      Back to blog
+    </a>
+    <article class="mt-10">
+      <p class="mb-4 text-sm font-black uppercase tracking-[0.24em] text-gold">{category}</p>
+      <h1 class="text-5xl font-black tracking-tight md:text-6xl">{title}</h1>
+      <p class="mt-6 text-lg leading-8 text-slate-600">{description}</p>
+      <div class="mt-8 flex items-center gap-3 text-sm text-slate-500">
+        <span>{author}</span>
+        <span aria-hidden="true">/</span>
+        <time datetime={publishDate.toISOString()}>{formattedDate}</time>
+      </div>
+      <div class="prose-nsh mt-12 border-t border-gold-pale pt-10">
+        {wordpressPost ? <Fragment set:html={wordpressPost.content} /> : Content && <Content />}
+      </div>
+    </article>
+  </main>
+</BaseLayout>

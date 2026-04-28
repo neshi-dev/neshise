@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const resources = [
+  ['AI Starter Guides', 'Plain-language explainers for choosing tools, building workflows, and avoiding overwhelm.'],
+  ['SEO Playbooks', 'Content planning, topical maps, entity building, and optimization checklists for organic growth.'],
+  ['Creator Workflows', 'Repeatable systems for YouTube scripts, faceless channels, shorts, thumbnails, and repurposing.'],
+  ['Prompt Library', 'Reusable prompts for research, ideation, writing, auditing, and publishing.'],
+  ['Tool Stack', 'A curated list of AI, SEO, video, and productivity tools for lean online teams.'],
+  ['Case Notes', 'Experiments and breakdowns from NESHISE projects, tutorials, and public builds.']
+];
+---
+
+<BaseLayout title="NESHISE Resource Hub | Accessible AI for all" description="Guides, tools, prompts, and playbooks for AI, SEO, YouTube, and online business workflows.">
+  <main>
+    <section class="bg-white py-20">
+      <div class="mx-auto max-w-7xl px-5 md:px-8">
+        <p class="mb-4 text-sm font-black uppercase tracking-[0.24em] text-gold">Resource Hub</p>
+        <h1 class="max-w-4xl text-5xl font-black tracking-tight md:text-7xl">
+          Practical AI resources for building online.
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+          A growing library of guides, tools, prompts, templates, and playbooks for creators, founders, and small teams.
+        </p>
+      </div>
+    </section>
+
+    <section class="bg-pearl py-24">
+      <div class="mx-auto grid max-w-7xl gap-6 px-5 md:grid-cols-2 md:px-8 lg:grid-cols-3">
+        {resources.map(([title, text]) => (
+          <article class="holo-border rounded-[1.4rem] bg-white p-[1px] shadow-soft">
+            <div class="h-full rounded-[1.35rem] border border-slate-100 bg-white p-7">
+              <p class="text-2xl font-black tracking-tight text-ink">{title}</p>
+              <p class="mt-4 leading-7 text-slate-600">{text}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="bg-white py-24">
+      <div class="mx-auto max-w-7xl px-5 md:px-8">
+        <div class="rounded-[2rem] border border-gold-pale bg-ink p-8 text-white md:p-12">
+          <p class="mb-4 text-sm font-black uppercase tracking-[0.24em] text-gold-light">Coming next</p>
+          <h2 class="max-w-3xl text-4xl font-black tracking-tight md:text-5xl">A searchable library of tutorials and tool notes.</h2>
+          <p class="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
+            The hub is ready for guides, templates, and WordPress API-backed content as the NESHISE library grows.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

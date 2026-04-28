@@ -1,0 +1,39 @@
+---
+/**
+ * Base HTML Shell Layout
+ * Acts purely as the scaffolding for pages. It delegates navigation and footer
+ * rendering to modular components to maintain abstraction and keep this file focused.
+ */
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_META } from '../lib/constants';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = SITE_META.title,
+  description = SITE_META.description
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-pearl text-ink antialiased">
+    <Header />
+    <slot />
+    <Footer />
+  </body>
+</html>

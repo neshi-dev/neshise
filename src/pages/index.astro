@@ -1,0 +1,53 @@
+---
+/**
+ * Main Controller File (index.astro)
+ * 
+ * This file serves purely as a controller and aggregator. It handles high-level data
+ * fetching and orchestrates the layout by composing modular UI components.
+ * This adheres to the principle of Separation of Concerns and ensures clean, readable code.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getWordPressPosts, type WordPressDisplayPost } from '../lib/wordpress';
+
+import HeroSection from '../components/sections/HeroSection.astro';
+import AboutSection from '../components/sections/AboutSection.astro';
+import ServicesSection from '../components/sections/ServicesSection.astro';
+import YouTubeSection from '../components/sections/YouTubeSection.astro';
+import ResourcesSection from '../components/sections/ResourcesSection.astro';
+import BlogSection from '../components/sections/BlogSection.astro';
+import ContactSection from '../components/sections/ContactSection.astro';
+
+type ListingPost = WordPressDisplayPost & {
+  id?: string;
+};
+
+// Data Retrieval Logic
+const localPosts = (await getCollection('blog'))
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
+const wordpressPosts = await getWordPressPosts(3);
+const posts: ListingPost[] = wordpressPosts.length
+  ? wordpressPosts
+  : localPosts.map((post) => ({
+      href: '',
+      slug: undefined,
+      title: post.data.title,
+      description: post.data.description,
+      category: post.data.category,
+      publishDate: post.data.publishDate,
+      id: post.id
+    }));
+---
+
+<BaseLayout>
+  <main>
+    <HeroSection />
+    <AboutSection />
+    <ServicesSection />
+    <YouTubeSection />
+    <ResourcesSection />
+    <BlogSection posts={posts} />
+    <ContactSection />
+  </main>
+</BaseLayout>
